@@ -45,7 +45,7 @@ Follow these steps to get the application running on your local machine.
 
 **1. Clone the Repository**
 ```bash
-git clone https://github.com/resume-analyzer-nlp` 
+git clone https://github.com/Ramyashree-20/resume-analyzer-nlp` 
 
 ---
 
