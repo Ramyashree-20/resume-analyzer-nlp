@@ -1,0 +1,10 @@
+# .gitignore
+
+# Ignore secrets and credentials
+.streamlit/secrets.toml
+
+# Optional - Ignore other sensitive or environment-related files
+.env
+__pycache__/
+*.pyc
+*.pyo
