@@ -1,0 +1,9 @@
+streamlit
+pandas
+PyPDF2
+python-docx
+openai
+google-search-results
+streamlit-lottie
+requests
+
