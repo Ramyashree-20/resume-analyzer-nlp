@@ -15,38 +15,28 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# --- URL for the Hosted GIF Background ---
-bg_image_url = "https://lottiefiles.com/free-animation/mesh-gradient-v2-cRguSOd1J4"
-
-# --- Custom CSS for Contrasting Sidebar and Animated Background ---
 css_template = """
 <style>
-    /* 1. MAIN CONTENT AREA: Apply the animated gradient GIF */
     div[data-testid="stAppViewContainer"] > .main {{
-        background-image: url("{url}");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
         background-attachment: fixed;
     }}
 
-    /* CRITICAL FIX: Make the inner content block transparent */
     div[data-testid="stAppViewContainer"] > .main .block-container {{
         background: transparent !important;
         padding-top: 2rem; 
     }}
 
-    /* 2. SIDEBAR: Give it a solid, light background */
     div[data-testid="stSidebar"] {{
         background-color: #f0f2f6 !important;
     }}
 
-    /* 3. SIDEBAR TEXT: Make all text and icons inside the sidebar BLACK */
     div[data-testid="stSidebar"] * {{
         color: #000000 !important;
     }}
     
-    /* Specific styling for the info/success boxes inside the sidebar to make them readable */
     div[data-testid="stSidebar"] .st-emotion-cache-16txtl3 {{
         background-color: rgba(230, 243, 255, 1) !important;
         border: 1px solid #91d5ff;
@@ -56,8 +46,7 @@ css_template = """
         background-color: #f6ffed !important;
         border: 1px solid #b7eb8f;
     }}
-    
-    /* Specific styling for the file uploader widget inside the sidebar */
+
     div[data-testid="stFileUploader"] {{
         background-color: #ffffff;
         border: 1px dashed #cccccc;
@@ -69,12 +58,10 @@ css_template = """
         color: #ff4b4b !important;
     }}
 
-    /* 4. MAIN CONTENT TEXT: Keep text here WHITE */
     .main h1, .main h2, .main h3, .main h4, .main p, .main .stMarkdown, .main div[data-testid="stText"] {{
         color: #ffffff !important;
     }}
     
-    /* 5. MAIN CONTENT COMPONENTS: Style with frosted glass effect */
     .main .st-emotion-cache-16txtl3,
     .main div[data-testid="stExpander"],
     .main .st-emotion-cache-q8sbsg,
@@ -90,9 +77,6 @@ css_template = """
 
 </style>
 """
-st.markdown(css_template.format(url=bg_image_url), unsafe_allow_html=True)
-
-
 # --- Helper Functions ---
 @st.cache_data
 def read_pdf(file):
@@ -182,10 +166,6 @@ st.title("🤖 AI Career Co-Pilot")
 
 # --- Sidebar ---
 with st.sidebar:
-    lottie_hero = load_lottieurl("https://lottie.host/80b06b61-a083-4a6c-a492-9f75605d2639/o1yZIA2yXq.json")
-    if lottie_hero:
-        st_lottie(lottie_hero, height=200, key="hero_lottie")
-
     st.markdown("<h2 style='text-align: center;'>Your Resume</h2>", unsafe_allow_html=True)
     resume_file = st.file_uploader("Upload your resume (PDF or DOCX)", type=['pdf', 'docx'], label_visibility="collapsed")
     
