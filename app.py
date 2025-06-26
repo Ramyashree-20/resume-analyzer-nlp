@@ -5,7 +5,6 @@ import json
 import requests
 import openai
 from serpapi import GoogleSearch
-from streamlit_lottie import st_lottie
 
 # --- Page Configuration ---
 st.set_page_config(
@@ -100,12 +99,6 @@ def read_docx(file):
 def load_skills(filepath="skills_db.json"):
     with open(filepath, 'r') as f:
         return json.load(f)
-
-def load_lottieurl(url: str):
-    r = requests.get(url)
-    if r.status_code != 200:
-        return None
-    return r.json()
 
 # --- API Functions ---
 def get_ai_analysis(resume_text, job_description):
