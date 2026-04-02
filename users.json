@@ -1,0 +1,18 @@
+{
+  "Ramya": {
+    "email": "ramyashree2r0@gmail.com",
+    "password": "cbfbc3c4b161ed916fb55ffa695ce3871dfed21522932c353ece01c743cc7503"
+  },
+  "testuser": {
+    "email": "test@example.com",
+    "password": "008c70392e3abfbd0fa47bbc2ed96aa99bd49e159727fcba0f2e6abeb3a9d601"
+  },
+  "tester": {
+    "email": "tester@example.com",
+    "password": "a109e36947ad56de1dca1cc49f0ef8ac9ad9a7b1aa0df41fb3c4cb73c1ff01ea"
+  },
+  "admin2": {
+    "email": "admin@admin.com",
+    "password": "c3fd469e91e2d442e2b943744dbc18524e5e73ce892b981fc1504883510cdb68"
+  }
+}

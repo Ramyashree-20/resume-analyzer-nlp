@@ -2,7 +2,7 @@ streamlit
 pandas
 PyPDF2
 python-docx
-openai
+groq
 google-search-results
 streamlit-lottie
 requests
