@@ -4,7 +4,7 @@ A sophisticated, AI-powered Streamlit application designed to be a personal care
 
 ---
 
-Try it out !!
+Try it out !! deployed in Streamlit cloud app
 https://ramya-made-resume-analyzer.streamlit.app/
 
 ### ✨ Features
