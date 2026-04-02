@@ -140,8 +140,57 @@ Resume:
         st.error(f"Could not generate AI search terms: {e}")
         return ["Data Analyst", "Software Engineer", "Project Manager"]
 
+LOCATIONS = {
+    "India": {
+        "Any": ["Any"],
+        "Karnataka": ["Any", "Bengaluru", "Mysore", "Hubli", "Mangaluru"],
+        "Maharashtra": ["Any", "Mumbai", "Pune", "Nagpur"],
+        "Delhi": ["Any", "New Delhi", "Gurgaon", "Noida"],
+        "Telangana": ["Any", "Hyderabad", "Warangal"],
+        "Tamil Nadu": ["Any", "Chennai", "Coimbatore", "Madurai"]
+    },
+    "USA": {
+        "Any": ["Any"],
+        "California": ["Any", "San Francisco", "Los Angeles", "San Jose", "San Diego"],
+        "New York": ["Any", "New York City", "Brooklyn", "Buffalo"],
+        "Texas": ["Any", "Austin", "Dallas", "Houston"],
+        "Washington": ["Any", "Seattle", "Redmond", "Bellevue"]
+    },
+    "UK": {
+        "Any": ["Any"],
+        "England": ["Any", "London", "Manchester", "Cambridge"],
+        "Scotland": ["Any", "Edinburgh", "Glasgow"]
+    },
+    "Canada": {
+        "Any": ["Any"],
+        "Ontario": ["Any", "Toronto", "Waterloo", "Ottawa"],
+        "British Columbia": ["Any", "Vancouver", "Victoria"]
+    },
+    "Australia": {
+        "Any": ["Any"],
+        "New South Wales": ["Any", "Sydney"],
+        "Victoria": ["Any", "Melbourne"]
+    },
+    "Germany": {
+        "Any": ["Any"],
+        "Berlin": ["Any", "Berlin"],
+        "Bavaria": ["Any", "Munich"]
+    },
+    "Remote": {
+        "Any": ["Any"]
+    }
+}
+
 def find_jobs(search_term, location="USA", experience="Any"):
-    exp_prefix = "" if experience == "Any" else f"{experience} "
+    exp_map = {
+        "Fresher / Entry Level": "Entry Level",
+        "1-3 Years": "Junior",
+        "3-5 Years": "Mid Level",
+        "5+ Years": "Senior",
+        "Any": ""
+    }
+    exp_prefix = exp_map.get(experience, "")
+    exp_prefix = f"{exp_prefix} " if exp_prefix else ""
     q = f"{exp_prefix}{search_term} jobs in {location}"
     params = {"engine": "google_jobs", "q": q, "api_key": st.secrets["SERPAPI_API_KEY"]}
     try:
@@ -164,7 +213,8 @@ def inject_css():
         --text-w: #f1f5f9; --text-m: #94a3b8; --text-d: #64748b;
         --glass-border: rgba(99,102,241,0.15);
     }
-    *:not(.material-symbols-rounded):not(.material-icons):not(svg):not(svg *) { font-family: 'Inter', sans-serif !important; }
+    html, body, p, div, span, h1, h2, h3, h4, h5, h6, a, li, button, input, select, textarea { font-family: 'Inter', sans-serif; }
+    [data-testid="stExpanderToggleIcon"], [data-testid="stExpanderToggleIcon"] *, .stIcon, [class*="icon"] { font-family: "Material Symbols Rounded", "Material Icons" !important; }
     .stApp { background: linear-gradient(135deg, #0a0a1a 0%, #0f172a 30%, #1e1b4b 70%, #0a0a1a 100%) !important; }
     [data-testid="stHeader"] { background: transparent !important; }
 
@@ -429,13 +479,14 @@ def show_main_app():
                 analyze_btn = st.button("⚡ Analyze Now", type="primary", use_container_width=True)
             with analysis_col:
                 st.markdown("#### 📊 AI Analysis Report")
-                if analyze_btn and job_description:
-                    with st.spinner("🤖 AI is analyzing..."):
-                        fb = get_ai_analysis(st.session_state.resume_text, job_description)
-                        if fb:
-                            st.markdown(fb)
-                elif analyze_btn:
-                    st.warning("Please paste a job description.")
+                if analyze_btn:
+                    if not job_description or len(job_description.strip()) < 20:
+                        st.warning("⚠️ Please paste a detailed job description (at least 20 characters) to get an accurate AI analysis.")
+                    else:
+                        with st.spinner("🤖 AI is analyzing..."):
+                            fb = get_ai_analysis(st.session_state.resume_text, job_description)
+                            if fb:
+                                st.markdown(fb)
                 else:
                     st.info("Your analysis report will appear here.")
         else:
@@ -453,16 +504,18 @@ def show_main_app():
 
             loc_col1, loc_col2, loc_col3 = st.columns(3)
             with loc_col1:
-                country = st.selectbox("🌍 Country", ["USA", "India", "UK", "Canada", "Australia", "Germany", "Remote"])
+                country = st.selectbox("🌍 Country", list(LOCATIONS.keys()))
             with loc_col2:
-                state = st.text_input("🗺️ State/Province", placeholder="e.g., California")
+                state_options = list(LOCATIONS.get(country, {"Any": ["Any"]}).keys())
+                state = st.selectbox("🗺️ State/Province", state_options)
             with loc_col3:
-                city = st.text_input("🏙️ City", placeholder="e.g., San Francisco")
+                city_options = LOCATIONS.get(country, {}).get(state, ["Any"])
+                city = st.selectbox("🏙️ City", city_options)
 
             st.markdown("<br>", unsafe_allow_html=True)
             if st.button("🔍 Find Jobs For Me", use_container_width=True):
                 # Build location string
-                location_parts = [p.strip() for p in [city, state, country] if p and p.strip() and p != "Remote"]
+                location_parts = [p.strip() for p in [city, state, country] if p and p.strip() and p not in ("Remote", "Any")]
                 search_location = ", ".join(location_parts) if location_parts else "Remote"
                 if country == "Remote":
                     search_location = "Remote"
