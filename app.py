@@ -412,7 +412,7 @@ def show_login_page():
     st.markdown("""
     <div style="text-align:center; margin-top:3rem; animation:fadeIn 1.5s ease-out 1.5s both;">
         <p style="color:#475569; font-size:0.8rem;">
-            Powered by <span class="gradient-text" style="font-weight:600;">Groq AI</span> ·
+            Powered by <span class="gradient-text" style="font-weight:600;">Ramya</span> ·
             Built with <span style="color:#ec4899;">♥</span> using Streamlit
         </p>
     </div>
